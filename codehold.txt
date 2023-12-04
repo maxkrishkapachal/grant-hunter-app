@@ -1,0 +1,659 @@
+Last working server function:
+-----------------------------------
+
+const PORT = 8000;
+
+import cors from 'cors';
+import express from 'express';
+import axios from 'axios';
+import cheerio from 'cheerio';
+import { websites, websiteLinks } from "./src/components/Websites.js";
+
+const app = express();
+app.use(cors());
+
+var grants;
+
+app.get('/grants', async(req, res) => {
+    grants = [];
+    try {
+        const answer = await axios.get(websiteLinks[0]).then(response => {
+            let posCounter = 0;
+            const html = response.data;
+            const grab = cheerio.load(html);
+            
+            grab('a', '#details-panel1').each(function() {
+                const title = grab(this).text();
+                const link = `https://cihr-irsc.gc.ca/e/${grab(this).attr('href')}`;
+                // posCounter++;
+                // // const objectives = [];
+                // // const timelines = [];
+
+                // //going to try visiting the next page and stealing the content from it
+
+                grants.push({
+                    "title" : title,
+                    "link" : link,
+                    "page" : 0
+                    // "pos" : pos
+                    // "objectives" : objectives,
+                    // "timelines" : timelines
+                });
+
+                // console.log(`Current pos + link: ${pos} ${link}`);
+
+                // const answer2 = axios.get(grants[pos].link).then(response2 => {
+                //     console.log(`${pos}`);
+                //     const html2 = response2.data;
+                //     const grab2 = cheerio.load(html2);
+                //     const objectives = [];
+                    
+                //     grab2('li', 'main').each(function() {
+                //         const objective = grab(this).text();
+                //         objectives.push(objective);
+                //         // grants.objectives.push(objective);
+                        
+                //     });
+                //     grants[pos]["objectives"] = objectives;
+                    
+                // });
+                // end of experiment
+
+                
+            });
+            console.log("Now printing the final grant info.");
+            console.log(grants);
+            
+
+            return grants;
+        });
+
+        res.send(grants);
+        
+
+        // console.log("Testing grant links:");
+
+        // console.log(grants);
+        // console.log(answer);
+
+        // grants.forEach(function(grant, i) {
+        //     console.log(grant.link, i);
+        //     //going to try visiting the next page and stealing the content from it
+        //     const grantPage = `https://cihr-irsc.gc.ca/e/${grant.link}.html`;
+
+        //     const answer2 = axios.get(grantPage).then(response => {
+        //         const html2 = response.data;
+        //         const grab2 = cheerio.load(html2);
+                
+                
+        //         // grab2('li', 'main').each(function() {
+        //         //     const objective = grab(this).text();
+        //         //     // console.log(objective);
+        //         //     // grants.push({
+        //         //     //     "objectives" : objective
+        //         //     // });
+        //         // });
+
+        //         return html2;
+        //     });
+        //     // end of experiment
+        // }); 
+
+
+        // const answer2 = await axios.get(grants[0].link).then(response => {
+        //     console.log("Response: ");
+        //     console.log(cheerio.load(response.data));
+        // });
+    } catch(err) { 
+        console.error(err);
+    }    
+});
+
+app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
+
+
+################################################
+server.js
+################################################
+
+const PORT = 8000;
+
+import cors from 'cors';
+import express from 'express';
+import axios from 'axios';
+import cheerio from 'cheerio';
+import { websites, websiteLinks } from "./src/components/Websites.js";
+
+const app = express();
+app.use(cors());
+
+var grants;
+
+app.get('/grants', async(req, res) => {
+    grants = [];
+    try {
+        const answer = await axios.get(websiteLinks[0]).then(response => {
+            let posCounter = 0;
+            const html = response.data;
+            const grab = cheerio.load(html);
+            
+            grab('a', '#details-panel1').each(function() {
+                const title = grab(this).text();
+                const link = `https://cihr-irsc.gc.ca/e/${grab(this).attr('href')}`;
+
+                grants.push({
+                    "title" : title,
+                    "link" : link,
+                    "page" : 0
+                });
+
+                
+            });
+            console.log("Now printing the final grant info.");
+            console.log(grants);
+            
+
+            return grants;
+        });
+
+        res.send(grants);
+        
+    } catch(err) { 
+        console.error(err);
+    }    
+});
+
+app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
+
+
+
+
+///////////////////////////////////////////////////////////////////
+
+
+
+
+const PORT = 8000;
+
+import cors from 'cors';
+import express from 'express';
+import axios from 'axios';
+import cheerio from 'cheerio';
+import puppeteer from 'puppeteer';
+import { websites, websiteLinks } from "./src/components/Websites.js";
+
+const url = 'https://www.sshrc-crsh.gc.ca/funding-financement/search_tool-outil_de_recherche-eng.aspx';
+
+const app = express();
+app.use(cors());
+
+var grants;
+
+
+app.get('/grants', async(req, res) => {
+    grants = [];
+    try {
+        const requests = websiteLinks.map((url) => axios.get(url));
+
+        await axios.all(requests).then((responses) => {
+            responses.forEach((response) => {
+                const html = response.data;
+                const grab = cheerio.load(html);
+
+                const websiteIndex = websiteLinks.indexOf(response.config.url);
+                console.log(websiteIndex);
+
+                switch(websites[websiteIndex]){
+                    case "CIHR":
+                        grab('a', '#details-panel1').each(function() {
+                            const title = grab(this).text();
+                            const link = `https://cihr-irsc.gc.ca/e/${grab(this).attr('href')}`;
+            
+                            grants.push({
+                                "title" : title,
+                                "link" : link,
+                                "page" : websiteIndex
+                            });
+                        });
+                        break;
+                    case "SSHRC":
+                        console.log("This is the contents of the page:");
+                        console.log(grab.html());
+
+                        break;
+                    case "SHRF":
+                        break;
+                    case "SCPOR":
+                        break;
+                    default:
+                }
+
+                if(websites[websiteIndex]){
+                    
+                }
+            });
+            
+            
+            
+            console.log("Now printing the final grant info.");
+            console.log(grants);
+            
+
+            return grants;
+        });
+
+        res.send(grants);
+        
+    } catch(err) { 
+        console.error(err);
+    }    
+});
+
+app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
+
+///////////////////////////////////////////////////////////
+
+const PORT = 8000;
+
+import cors from 'cors';
+import express from 'express';
+import axios from 'axios';
+import cheerio from 'cheerio';
+import puppeteer from 'puppeteer';
+import { websites, websiteLinks } from "./src/components/Websites.js";
+
+const url = 'https://www.sshrc-crsh.gc.ca/funding-financement/search_tool-outil_de_recherche-eng.aspx';
+
+const app = express();
+app.use(cors());
+
+var grants;
+
+const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+
+app.get('/grants', async(req, res) => {
+    grants = [];
+    try {
+
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto(url);
+        // await page.screenshot({path: 'screenshot.png'});
+
+        console.log("Attempting to filter content:");
+
+        await page.evaluate(function() {
+            document.getElementById('dt_applicant').value = "Graduate student";
+            document.getElementById('btnFilter').click();
+            document.getElementsByName('dataset-filter_length').value = 100;
+        });
+
+        console.log('Waiting for change.');
+        await timeout(1500);
+        let searchReturn = await page.evaluate(() => {
+            let results = [];
+            // let items = document.querySelectorAll('td > h3');
+            
+            // items.forEach((item) => {
+            //     results.push({
+            //         html: item.innerHTML,
+            //         title: item.innerText,
+            //         link: item.href,
+            //         // title: item.querySelector('h3').text(),
+            //         // text: item.querySelectorAll('p').text()
+            //     });
+            // });
+
+            let items = document.querySelectorAll('tbody > tr');
+            //tbody
+            //  tr
+            //      td
+            //          h3
+            //              a href
+            //          /h3
+            //          p
+            //          /p
+            //          p
+            //          /p
+            //      /td
+            //  /tr
+            ///tbody
+            items.forEach((item) => {
+                // let head = item.querySelector('h3').innerText;
+                // let link = head.querySelector('a').getAttribute('href');
+                let contentList = item.querySelectorAll('p').innerHTML;
+                let content = "";
+                for(let contentItem in contentList){
+                    content = content.concat(contentItem, " ");
+                }
+
+                results.push({
+                    title: item.querySelector('h3').innerText,
+                    url: item.querySelector('a').href,
+                    content: content,
+                });
+            });
+
+            return results;
+        });
+        
+
+        browser.close();
+        console.log(searchReturn);
+        // return resolve(searchReturn);
+
+        
+
+
+        const requests = websiteLinks.map((url) => axios.get(url));
+
+        await axios.all(requests).then((responses) => {
+            responses.forEach((response) => {
+                const html = response.data;
+                const grab = cheerio.load(html);
+
+                const websiteIndex = websiteLinks.indexOf(response.config.url);
+                console.log(websiteIndex);
+
+                switch(websites[websiteIndex]){
+                    case "CIHRA":
+                        grab('a', '#details-panel1').each(function() {
+                            const title = grab(this).text();
+                            const link = `https://cihr-irsc.gc.ca/e/${grab(this).attr('href')}`;
+            
+                            grants.push({
+                                "title" : title,
+                                "link" : link,
+                                "page" : websiteIndex
+                            });
+                        });
+                        break;
+                    case "SSHRC":
+                        // console.log("This is the contents of the page:");
+                        // console.log(grab.html());
+
+                        break;
+                    case "SHRF":
+                        break;
+                    case "SCPOR":
+                        break;
+                    default:
+                }
+
+                if(websites[websiteIndex]){
+                    
+                }
+            });
+            
+            
+            
+            console.log("Now printing the final grant info.");
+            console.log(grants);
+            
+
+            return grants;
+        });
+
+        res.send(grants);
+        
+    } catch(err) { 
+        console.error(err);
+    }    
+});
+
+app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
+
+
+//////////////////////////////////////////////////////
+
+CSS Code:
+
+.grant-header {
+  /* background: var(--Accent);
+  padding: 10px;
+  text-align: center;
+  font-size: 60px; 
+  font-family: "Tilt Warp"; */
+}
+
+h1 {
+  /* margin: 0px;
+  margin-bottom: 30px;
+  font-family: "Erica";
+  color: var(--Dark); */
+}
+
+/* .choices {
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: var(--Light);
+}
+
+article {
+  position: relative;
+  width: 225px;
+  height: 100px;
+  margin: 5px;
+  float: left;
+  border: 2px solid var(--Light);
+  box-sizing: border-box;
+  border-radius: 7%;
+}
+
+article div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 25px;
+  transition: .5s ease;
+  border-radius: 5%;
+}
+
+article input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 225px;
+  height: 100px;
+  opacity: 0;
+  cursor: pointer;
+  
+} */
+
+/* input[type=checkbox]:checked ~ div {
+  background-color: var(--Light);
+  color: var(--Dark);
+} */
+
+.hunt-button {
+  margin-top: 50px;
+}
+
+.GrantHunterIcon {
+  /* width: 10%;
+  transform: translateY(15px); */
+}
+
+.hunt {
+  /* margin: 30px auto;
+  margin-left: 15px;
+  width: 150px;
+  padding: 10px 20px;
+  border: 2px transparent var(--Dark);
+  border-radius: 7%;
+  color: var(--Accent);
+  font-size: 25px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: .3s ease; */
+}
+
+.upgrade-btn:hover {
+  background-color: var(--Dark);
+}
+
+body {
+  /* background: var(--Dark);
+  margin: 0px;
+  padding: 0px; */
+}
+
+.grants {
+  /* padding: 20px;
+  margin: 20px;
+  border-radius: 2%;
+  background: var(--Light);
+  font-family: "Tilt Warp"; */
+}
+
+.grant {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 20px; */
+}
+
+a {
+  /* color: var(--Dark);
+  text-decoration: none;
+  font-size: 40px; */
+}
+
+a:hover {
+  color: var(--Accent);
+}
+
+.grant-info {
+  /* display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 30px; */
+}
+
+.timeline, .objectives {
+  /* width: 40%;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid var(--Accent);
+  border-radius: 3%;
+  padding-left: 10px;
+  color: var(--Accent); */
+}
+
+
+
+///////////////// Pre Props Experiment ////////////////
+
+Header.js
+
+import headerImage from '../res/img/GradPosingEdit1.png';
+import { useState } from 'react';
+import { websites } from "./Websites.js";
+
+
+const Header = ({checkBoxesChecked}) => {   
+    const [checkedState, setCheckedState] = useState(
+        new Array(websites.length).fill(true)
+    );
+    
+    const handleOnChange = (position) => {
+        const updatedCheckedState = checkedState.map(
+            (item, index) => index === position ? !item : item
+        );
+    
+        setCheckedState(updatedCheckedState);
+        checkBoxesChecked(updatedCheckedState);
+        console.log("Here is the updated checked state: ", updatedCheckedState);
+    };
+
+    return(
+        <div class="wrapper">
+            <div class="grant-hunter-header">
+                <div class='grant-hunter-title'>
+                    <p class="title">GRANT HUNTER</p>
+                    <p class="slogan">Find your next opportunity.</p>
+                    <ul class="grant-choices">
+                        {websites.map((name, index) => {
+                            return (
+                                <li class="grant-choice" key={index}>
+                                    <input
+                                        type="checkbox"
+                                        id={`custom-checkbox-${index}`}
+                                        name={name}
+                                        value={name}
+                                        checked={checkedState[index]}
+                                        onChange={() => handleOnChange(index)}
+                                    />
+                                    <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    <button class="hunt-btn">Hunt</button>
+                </div>
+                <div class="grant-hunter-feature background-tint">
+                    <img src={headerImage} class="grant-hunter-header-image"></img>
+                </div>
+            </div>
+            {/* <img src={patternImage} class="graphic-pattern"></img> */}
+        </div>
+    );
+};
+
+export default Header;
+
+App.js
+
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import Header from './components/Header.js';
+import Listing from './components/Listing.js';
+
+// import './App.css';
+
+const grantsPage = "http://localhost:8000/grants";
+
+const App = () => {
+  const [grants, setGrants] = useState(null);
+
+  const [boxesChecked, setBoxesChecked] = useState([]);
+
+  const checkBoxesChecked = (checkedState) => {
+    setBoxesChecked(checkedState);
+  }
+
+  const getGrants = async() => {
+    try {
+      // eslint-disable-next-line
+      const answer = axios.get(grantsPage).then(response => {
+        const code = response.data;
+        setGrants(code);
+        return code;
+      });
+      console.log(answer);
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    getGrants()
+  }, []);
+
+  return (
+    <div class="app">
+      <Header checkBoxesChecked={checkBoxesChecked}/>
+      <div class='feed'>
+        {grants?.map(grant => <Listing key={grant.title} info={grant}/>)}
+      </div>
+      {/* <Listing /> */}
+    </div>
+  );
+}
+
+export default App;

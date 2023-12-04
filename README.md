@@ -1,5 +1,12 @@
 # Getting Started with Create React App
 
+Current Goals For This Project:
+- Get the hunt button working
+- Get the hunt button to work with the checkboxes
+- Extract the necessary data from all four websites at once
+- Allow a search function on the page
+- Make the page not fucking ugly as sin
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

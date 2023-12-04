@@ -1,13 +1,299 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/*********************************************************************************************
+FONTS
+*********************************************************************************************/
+
+@font-face {
+  font-family: "Saira SC EBold";
+  src: url('./res/font/Saira/SemiCondensed/SairaSemiCondensed-ExtraBold.ttf') format('truetype');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: "Saira EC ELight";
+  src: url('./res/font/Saira/ExtraCondensed/SairaExtraCondensed-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "Saira EC Bold";
+  src: url('./res/font/Saira/ExtraCondensed/SairaExtraCondensed-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "Saira SC Reg";
+  src: url('./res/font/Saira/SemiCondensed/SairaSemiCondensed-Regular.ttf') format('truetype');
+}
+
+/*********************************************************************************************
+COLOURS AND SCROLLBAR STYLE
+*********************************************************************************************/
+
+:root {
+
+  --LightNeutral: #F5F5F5; /* #E4E4E4; */
+  --DarkNeutral: #CAB9BB; /*#CCBDBE;*/
+  --PaleLightAccent: #FE8982;
+  --LightAccent: #FE5653;
+  --MiddleAccent: #F9373D;
+  --BrightAccent: #FA242A;
+  --DarkAccent: #A70419;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+:root::-webkit-scrollbar{
+  display: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/*********************************************************************************************
+HEADER
+*********************************************************************************************/
+
+.grant-hunter-header {
+  background-image: linear-gradient(-90deg , var(--LightNeutral), var(--DarkNeutral));
+
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr;
+  grid-gap: 0em;
+}
+
+.grant-hunter-title {
+  margin: auto;
+  text-align: center;
+}
+
+/**************************************
+GRANT HUNTER TITLE
+***************************************/
+
+.grant-hunter-title .title {
+  font-family: "Saira SC EBold";
+  font-size: 100px;
+  line-height: 100%;
+
+  margin: 0px 0px 10px 0px;
+  padding: 0;
+}
+
+.grant-hunter-title .slogan {
+  font-family: "Saira EC ELight";
+  font-size: 40px;
+  font-style: italic;
+  line-height: 100%;
+  margin: 0px 0px 30px 0px;
+  padding: 0;
+}
+
+/**************************************
+GRANT PAGE SITES
+***************************************/
+
+.grant-choices {
+  font-family: "Saira EC ELight";
+  font-size: 40px;
+
+  margin: 0px 0px 20px 0px;
+  padding: 0;
+}
+
+.grant-choices .grant-choice {
+  display: inline-block;
+  list-style-type: none;
+  line-height: 100%;
+}
+
+.grant-choice {
+  position: relative;
+  width: 110px;
+  height: 80px;
+  margin: 5px;
+  border: 2px solid var(--PaleLightAccent);
+  box-sizing: border-box;
+}
+
+.grant-choice label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s ease;
+}
+
+.grant-choice input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110px;
+  height: 80px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+input[type=checkbox]:checked ~ label {
+  background-color: var(--PaleLightAccent);
+}
+
+/**************************************
+HUNT BUTTON
+***************************************/
+
+.hunt-btn {
+  background-color: var(--BrightAccent);
+  font-family: "Saira EC Bold";
+  font-size: 40px;
+  width: 350px;
+  height: 80px;
+
+  color: var(--LightNeutral);
+
+  border: 5px solid var(--BrightAccent);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.7s ease;
+}
+
+.hunt-btn:hover {
+  background-color: var(--DarkAccent);
+  border-color: var(--DarkAccent);
+  transition: 0.7s ease;
+}
+
+.hunt-btn:focus {
+  transition: 0.3s ease;
+  width: 80px;
+  
+  background-color: transparent;
+  color: transparent;
+  border-width: 5px;
+  
+  animation: loading-ring-animation 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes loading-ring-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/**************************************
+HEADER IMAGE
+***************************************/
+
+.grant-hunter-header-image {
+  position: absolute;
+  display: block;
+  margin-left: -8.5%;
+  margin-right: auto;
+  height: 100%;
+}
+
+.graphic-pattern {
+  position: absolute;
+  width: 600px;
+}
+
+/*********************************************************************************************
+LISTINGS
+*********************************************************************************************/
+
+.grant-listings {
+  position: relative;
+  width: auto;
+  background-color: var(--DarkNeutral);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* text-align: center; */
+  justify-content: center;
+  padding: 10px;
+  font-family: "Saira SC Reg";
+  
+}
+
+.grant-listing {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  background-color: var(--LightNeutral);
+  text-align: left;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.grant-listing-element {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 130px;
+  border-radius: 15%;
+  margin: 20px;
+}
+
+.gl-website {
+  position: relative;
+  font-size: 50px;
+  width: 10%;
+  font-family: "Saira EC ELight";
+  /* background-color: var(--PaleLightAccent); */
+  /* background-color: blue; */
+}
+
+.gl-website-CIHR {
+  background-image: linear-gradient(-135deg , var(--LightNeutral), aqua);
+}
+
+.gl-website-SSHRC {
+  background-image: linear-gradient(-135deg , var(--LightNeutral), palegreen);
+}
+
+.gl-website-SHRF {
+  background-image: linear-gradient(-135deg , var(--LightNeutral), palegoldenrod);
+}
+
+.gl-title {
+  width: 40%;
+  font-size: 20px;
+  /* background-color: red; */
+}
+
+.gl-title a {
+  text-decoration: none;
+  width: 100%;
+  color: black;
+}
+
+.gl-title a:hover {
+  color: var(--DarkAccent);
+}
+
+.gl-amount {
+  width: 20%;
+  font-size: 20px;
+}
+
+.gl-deadline {
+  width: 30%;
+  font-size: 20px;
 }
