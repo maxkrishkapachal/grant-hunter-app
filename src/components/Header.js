@@ -51,7 +51,7 @@ const Header = ({checkBoxesChecked, huntBtnPressed}) => {
                     <button class="hunt-btn" onClick={handleHuntBtnPressed}>Hunt</button>
                 </div>
                 <div class="grant-hunter-feature background-tint">
-                    <img src={headerImage} class="grant-hunter-header-image"></img>
+                    <img src={headerImage} class="grant-hunter-header-image" alt="photo of graduates"></img>
                 </div>
             </div>
             {/* <img src={patternImage} class="graphic-pattern"></img> */}

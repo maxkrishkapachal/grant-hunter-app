@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Header from './components/Header.js';
 import Listing from './components/Listing.js';
 import { websites } from './components/Websites.js';
@@ -29,7 +29,7 @@ const App = () => {
   const getGrants = () => {
     console.log("Attempting to retrieve grants now!");
     try {
-      const answer = axios.get(grantsPage).then(response => {
+      axios.get(grantsPage).then(response => {
         const code = response.data;
         var grantsToShow = [];
         for(var i = 0; i < boxesChecked.length; i++){
