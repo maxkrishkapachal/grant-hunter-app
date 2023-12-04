@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/maxkrishkapachal/grant-hunter-app/static/css/main.12897cdc.css",
+    "main.js": "/maxkrishkapachal/grant-hunter-app/static/js/main.b2cc3b6c.js",
+    "static/media/GradPosingEdit1.png": "/maxkrishkapachal/grant-hunter-app/static/media/GradPosingEdit1.15d57d08e5c0923cf003.png",
+    "static/media/SairaSemiCondensed-ExtraBold.ttf": "/maxkrishkapachal/grant-hunter-app/static/media/SairaSemiCondensed-ExtraBold.fdd776cbc4e0d10a68d3.ttf",
+    "static/media/SairaSemiCondensed-Regular.ttf": "/maxkrishkapachal/grant-hunter-app/static/media/SairaSemiCondensed-Regular.3ed5960d0fd786ca3303.ttf",
+    "static/media/SairaExtraCondensed-Bold.ttf": "/maxkrishkapachal/grant-hunter-app/static/media/SairaExtraCondensed-Bold.a6498d2548bc351cc040.ttf",
+    "static/media/SairaExtraCondensed-ExtraLight.ttf": "/maxkrishkapachal/grant-hunter-app/static/media/SairaExtraCondensed-ExtraLight.533c7afceabba777fd8b.ttf",
+    "index.html": "/maxkrishkapachal/grant-hunter-app/index.html",
+    "main.12897cdc.css.map": "/maxkrishkapachal/grant-hunter-app/static/css/main.12897cdc.css.map",
+    "main.b2cc3b6c.js.map": "/maxkrishkapachal/grant-hunter-app/static/js/main.b2cc3b6c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.12897cdc.css",
+    "static/js/main.b2cc3b6c.js"
+  ]
+}
