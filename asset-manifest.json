@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/grant-hunter-app/static/css/main.6276b708.css",
-    "main.js": "/grant-hunter-app/static/js/main.87fd496b.js",
+    "main.css": "/grant-hunter-app/static/css/main.aaedd98f.css",
+    "main.js": "/grant-hunter-app/static/js/main.8e2b49ab.js",
     "static/media/GradPosingEdit1.png": "/grant-hunter-app/static/media/GradPosingEdit1.15d57d08e5c0923cf003.png",
     "static/media/SairaSemiCondensed-ExtraBold.ttf": "/grant-hunter-app/static/media/SairaSemiCondensed-ExtraBold.fdd776cbc4e0d10a68d3.ttf",
     "static/media/SairaSemiCondensed-Regular.ttf": "/grant-hunter-app/static/media/SairaSemiCondensed-Regular.3ed5960d0fd786ca3303.ttf",
     "static/media/SairaExtraCondensed-Bold.ttf": "/grant-hunter-app/static/media/SairaExtraCondensed-Bold.a6498d2548bc351cc040.ttf",
     "static/media/SairaExtraCondensed-ExtraLight.ttf": "/grant-hunter-app/static/media/SairaExtraCondensed-ExtraLight.533c7afceabba777fd8b.ttf",
     "index.html": "/grant-hunter-app/index.html",
-    "main.6276b708.css.map": "/grant-hunter-app/static/css/main.6276b708.css.map",
-    "main.87fd496b.js.map": "/grant-hunter-app/static/js/main.87fd496b.js.map"
+    "main.aaedd98f.css.map": "/grant-hunter-app/static/css/main.aaedd98f.css.map",
+    "main.8e2b49ab.js.map": "/grant-hunter-app/static/js/main.8e2b49ab.js.map"
   },
   "entrypoints": [
-    "static/css/main.6276b708.css",
-    "static/js/main.87fd496b.js"
+    "static/css/main.aaedd98f.css",
+    "static/js/main.8e2b49ab.js"
   ]
 }
